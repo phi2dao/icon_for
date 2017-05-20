@@ -1,0 +1,39 @@
+{
+    "types": {
+        "application/*": "application",
+        "application/msword": "document",
+        "application/pdf": "pdf",
+        "application/rtf": "document",
+        "application/vnd.ms-powerpoint": "presentation",
+        "application/vnd.ms-excel": "spreadsheet",
+        "application/vnd.oasis.opendocument.presentation": "presentation",
+        "application/vnd.oasis.opendocument.spreadsheet": "spreadsheet",
+        "application/vnd.oasis.opendocument.text": "document",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation": "presentation",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "spreadsheet",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "document",
+        "application/x-7z-compressed": "archive",
+        "application/x-rar-compressed": "archive",
+        "application/x-tar": "archive",
+        "application/zip": "archive",
+        "audio/*": "audio",
+        "image/*": "image",
+        "text/*": "code",
+        "text/plain": "text",
+        "video/*": "video"
+    },
+    "icons": {
+        "application": "file-o",
+        "audio": "file-audio-o",
+        "archive": "file-archive-o",
+        "code": "file-code-o",
+        "document": "file-document-o",
+        "fallback": "file-o",
+        "image": "file-image-o",
+        "pdf": "file-pdf-o",
+        "presentation": "file-powerpoint-p",
+        "spreadsheet": "file-excel-o",
+        "text": "file-text-o",
+        "video": "file-video-o"
+    }
+}
