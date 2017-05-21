@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["phi2dao"]
   spec.email         = ["orgodemir.v@gmail.com"]
 
-  spec.summary       = %q{Write a short summary, because Rubygems requires one.}
-  spec.homepage      = "http://www.example.com"
+  spec.summary       = %q{Translates mime types into icon strings for use with other libraries. Works with Font Awesome out of the box.}
+  spec.homepage      = "https://github.com/phi2dao/icon_for"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
