@@ -48,13 +48,31 @@ RSpec.describe IconFor::IconSet do
         expect(set["text/html"]).to eq "file-code-o"
       end
     end
+
+    context "with a prefix" do
+      before { IconFor.config.prefix = "fa-" }
+      after { IconFor.config.prefix = nil }
+
+      it "should have a prefix" do
+        expect(set["text/html"]).to eq "fa-file-code-o"
+      end
+    end
+
+    context "with a suffix" do
+      before { IconFor.config.suffix = "-suffix" }
+      after { IconFor.config.suffix = nil }
+
+      it "should have a suffix" do
+        expect(set["text/html"]).to eq "file-code-o-suffix"
+      end
+    end
   end
 end
 
 RSpec.describe IconFor do
   describe ".register" do
     context "when default: false" do
-      before { IconFor.default = nil }
+      before { IconFor.config.default = nil }
 
       it "should define a constant" do
         expect(IconFor.const_defined? :FA).to be_truthy
@@ -70,7 +88,7 @@ RSpec.describe IconFor do
     end
 
     context "when default: true" do
-      before { IconFor.default = :FA }
+      before { IconFor.config.default = :FA }
 
       it "should be accessable from IconFor" do
         expect(IconFor["text/html"]).to eq IconFor::FA["text/html"]

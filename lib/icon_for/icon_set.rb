@@ -21,7 +21,7 @@ module IconFor
           icon = "fallback"
         end
       end
-      @data["icons"][icon]
+      "#{IconFor.config.prefix}#{@data["icons"][icon]}#{IconFor.config.suffix}"
     end
   end
 end
