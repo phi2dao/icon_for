@@ -3,14 +3,14 @@ require "json"
 module IconFor
   class IconSet
     def initialize data
-      if data.is_a? File
-        @data = JSON.load data
-      else
-        @data = data
+      case data
+      when Hash then @data = data
+      when String then @data = JSON.parse data
+      when File then @data = JSON.parse data.read
       end
     end
 
-    def [] mime
+    def [] mime, prefix: IconFor.config.prefix, suffix: IconFor.config.suffix
       if @data["types"].key? mime
         icon = @data["types"][mime]
       else
@@ -21,7 +21,7 @@ module IconFor
           icon = "fallback"
         end
       end
-      "#{IconFor.config.prefix}#{@data["icons"][icon]}#{IconFor.config.suffix}"
+      "#{prefix}#{@data["icons"][icon]}#{suffix}"
     end
   end
 end

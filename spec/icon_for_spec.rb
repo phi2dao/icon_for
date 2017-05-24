@@ -3,36 +3,37 @@ require "spec_helper"
 RSpec.describe IconFor::IconSet do
   context "when initialized with a hash" do
     subject :set do
-      set = {
+      IconFor::IconSet.new({
         "types" => {
-          "text/*" => "text",
-          "text/html" => "code"
+          "text/plain" => "text"
         },
         "icons" => {
-          "text" => "file-text-o",
-          "code" => "file-code-o",
-          "fallback" => "file-o"
+          "text" => "file-text-o"
         }
-      }
-      IconFor::IconSet.new set
+      })
     end
 
-    context "when given a known mime type" do
-      it "should return an icon string" do
-        expect(set["text/html"]).to eq "file-code-o"
-      end
+    it "should return an icon string" do
+      expect(set["text/plain"]).to be_a String
+    end
+  end
+
+  context "when initialized with a string" do
+    subject :set do
+      IconFor::IconSet.new <<~JSON
+        {
+          "types": {
+            "text/plain": "text"
+          },
+          "icons": {
+            "text": "file-text-o"
+          }
+        }
+      JSON
     end
 
-    context "when given a known media type" do
-      it "should return an icon string" do
-        expect(set["text/css"]).to eq "file-text-o"
-      end
-    end
-
-    context "when given an unknown mime type" do
-      it "should return a fallback" do
-        expect(set["error/x-text"]).to eq "file-o"
-      end
+    it "should return an icon string" do
+      expect(set["text/plain"]).to be_a String
     end
   end
 
@@ -43,56 +44,44 @@ RSpec.describe IconFor::IconSet do
       end
     end
 
-    context "when given a mime type" do
-      it "should return an icon string" do
-        expect(set["text/html"]).to eq "file-code-o"
-      end
-    end
-
-    context "with a prefix" do
-      before { IconFor.config.prefix = "fa-" }
-      after { IconFor.config.prefix = nil }
-
-      it "should have a prefix" do
-        expect(set["text/html"]).to eq "fa-file-code-o"
-      end
-    end
-
-    context "with a suffix" do
-      before { IconFor.config.suffix = "-suffix" }
-      after { IconFor.config.suffix = nil }
-
-      it "should have a suffix" do
-        expect(set["text/html"]).to eq "file-code-o-suffix"
-      end
+    it "should return an icon string" do
+      expect(set["text/plain"]).to be_a String
     end
   end
-end
 
-RSpec.describe IconFor do
-  describe ".register" do
-    context "when default: false" do
-      before { IconFor.config.default = nil }
-
-      it "should define a constant" do
-        expect(IconFor.const_defined? :FA).to be_truthy
-      end
-
-      it "should create a new IconSet" do
-        expect(IconFor::FA).to be_a IconFor::IconSet
-      end
-
-      it "should not be accessable from IconFor" do
-        expect(IconFor["text/html"]).to_not eq IconFor::FA["text/html"]
+  context "with different mime types" do
+    subject :set do
+      File.open IconFor::PATH + "/fa.json" do |file|
+        IconFor::IconSet.new file
       end
     end
 
-    context "when default: true" do
-      before { IconFor.config.default = :FA }
+    it "should match known mime types" do
+      expect(set["text/plain"]).to eq "file-text-o"
+    end
 
-      it "should be accessable from IconFor" do
-        expect(IconFor["text/html"]).to eq IconFor::FA["text/html"]
+    it "should match known media types" do
+      expect(set["audio/mp4"]).to eq "file-audio-o"
+    end
+
+    it "should fallback on unknown mime types" do
+      expect(set["font/ttf"]).to eq "file-o"
+    end
+  end
+
+  context "with different options" do
+    subject :set do
+      File.open IconFor::PATH + "/fa.json" do |file|
+        IconFor::IconSet.new file
       end
+    end
+
+    it "should prepend prefixes" do
+      expect(set["text/plain", prefix: "fa-"]).to eq "fa-file-text-o"
+    end
+
+    it "should append suffixes" do
+      expect(set["text/plain", suffix: "-fa"]).to eq "file-text-o-fa"
     end
   end
 end
